@@ -26,5 +26,3 @@
 ## Данные от админки 
 - логин - admin
 - пароль - admin123
-
-# currency_converter_api
