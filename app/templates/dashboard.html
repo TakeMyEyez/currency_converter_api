@@ -1,0 +1,143 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+	<div class="col-md-4">
+		<div class="card shadow mb-4">
+			<div class="card-header bg-primary text-white">
+				<h5><i class="fas fa-user-circle"></i> Профиль</h5>
+			</div>
+			<div class="card-body text-center">
+				<div class="mb-3">
+					<i class="fas fa-user fa-4x text-primary"></i>
+				</div>
+				<h4>{{ user.username }}</h4>
+				<p class="text-muted">{{ user.email }}</p>
+				<p><i class="fas fa-calendar"></i> Зарегистрирован: {{ user.created_at.strftime('%d.%m.%Y') }}</p>
+				{% if user.is_admin %}
+				<span class="badge bg-danger"><i class="fas fa-crown"></i> Администратор</span>
+				{% endif %}
+			</div>
+		</div>
+
+		<div class="card shadow">
+			<div class="card-header bg-info text-white">
+				<h5><i class="fas fa-chart-line"></i> Быстрая конвертация</h5>
+			</div>
+			<div class="card-body">
+				<div class="list-group">
+					<a href="/convert?from=USD&to=RUB&amount=100" class="list-group-item list-group-item-action">
+						<i class="fas fa-dollar-sign"></i> 100 USD → RUB
+					</a>
+					<a href="/convert?from=EUR&to=RUB&amount=100" class="list-group-item list-group-item-action">
+						<i class="fas fa-euro-sign"></i> 100 EUR → RUB
+					</a>
+					<a href="/convert?from=USD&to=EUR&amount=100" class="list-group-item list-group-item-action">
+						<i class="fas fa-dollar-sign"></i> 100 USD → EUR
+					</a>
+					<a href="/convert?from=EUR&to=USD&amount=100" class="list-group-item list-group-item-action">
+						<i class="fas fa-euro-sign"></i> 100 EUR → USD
+					</a>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="col-md-8">
+		<div class="card shadow mb-4">
+			<div class="card-header bg-success text-white">
+				<h5><i class="fas fa-history"></i> Последние операции</h5>
+			</div>
+			<div class="card-body">
+				{% if conversions %}
+				<div class="table-responsive">
+					<table class="table table-hover">
+						<thead class="table-light">
+							<tr>
+								<th>Дата</th>
+								<th>Сумма</th>
+								<th>Из</th>
+								<th>В</th>
+								<th>Результат</th>
+								<th>Курс</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for conv in conversions %}
+							<tr>
+								<td>{{ conv.timestamp.strftime('%H:%M %d.%m') }}</td>
+								<td><strong>{{ conv.amount }}</strong></td>
+								<td><span class="badge bg-primary">{{ conv.from_currency }}</span></td>
+								<td><span class="badge bg-success">{{ conv.to_currency }}</span></td>
+								<td><strong>{{ conv.converted_amount }}</strong></td>
+								<td>{{ conv.rate_used|round(4) }}</td>
+							</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+				</div>
+				{% else %}
+				<div class="text-center py-4">
+					<i class="fas fa-exchange-alt fa-3x text-muted mb-3"></i>
+					<h5>У вас пока нет операций</h5>
+					<p class="text-muted">Начните конвертировать валюты прямо сейчас!</p>
+					<a href="/convert" class="btn btn-primary">
+						<i class="fas fa-calculator"></i> Конвертировать
+					</a>
+				</div>
+				{% endif %}
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-md-6">
+				<div class="card shadow">
+					<div class="card-header bg-warning text-dark">
+						<h5><i class="fas fa-bolt"></i> Быстрые действия</h5>
+					</div>
+					<div class="card-body">
+						<div class="d-grid gap-2">
+							<a href="/convert" class="btn btn-outline-primary">
+								<i class="fas fa-calculator"></i> Конвертировать
+							</a>
+							<a href="/history" class="btn btn-outline-success">
+								<i class="fas fa-history"></i> Вся история
+							</a>
+							{% if user.is_admin %}
+							<a href="/admin" class="btn btn-outline-danger">
+								<i class="fas fa-cog"></i> Админ-панель
+							</a>
+							{% endif %}
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-6">
+				<div class="card shadow">
+					<div class="card-header bg-info text-white">
+						<h5><i class="fas fa-chart-pie"></i> Статистика</h5>
+					</div>
+					<div class="card-body">
+						<div class="row text-center">
+							<div class="col-6">
+								<h3>{{ conversions|length }}</h3>
+								<p class="text-muted small">Операций</p>
+							</div>
+							<div class="col-6">
+								<h3>
+									{% if conversions %}
+									{{ (conversions|map(attribute='converted_amount')|sum)|round(2) }}
+									{% else %}
+									0
+									{% endif %}
+								</h3>
+								<p class="text-muted small">Всего сконвертировано</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}

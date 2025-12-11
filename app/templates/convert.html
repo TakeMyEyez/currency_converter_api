@@ -1,0 +1,190 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+	<div class="col-md-8 offset-md-2">
+		<div class="card shadow">
+			<div class="card-header bg-success text-white">
+				<h4><i class="fas fa-calculator"></i> Конвертер валют</h4>
+			</div>
+			<div class="card-body">
+				<form method="POST" action="/convert">
+					<div class="row align-items-end">
+						<div class="col-md-4">
+							<label for="amount" class="form-label">Сумма</label>
+							<div class="input-group">
+								<span class="input-group-text"><i class="fas fa-money-bill-wave"></i></span>
+								<input type="number" class="form-control" id="amount" name="amount" step="0.01" min="0.01"
+									value="{% if result %}{{ result.amount }}{% else %}100{% endif %}" required>
+							</div>
+						</div>
+
+						<div class="col-md-3">
+							<label for="from_currency" class="form-label">Из валюты</label>
+							<select class="form-select" id="from_currency" name="from_currency" required>
+								<option value="USD" {% if result and result.from_currency=='USD' %}selected{% endif %}>🇺🇸 USD - Доллар
+									США</option>
+								<option value="EUR" {% if result and result.from_currency=='EUR' %}selected{% endif %}>🇪🇺 EUR - Евро
+								</option>
+								<option value="RUB" {% if result and result.from_currency=='RUB' %}selected{% endif %}>🇷🇺 RUB -
+									Российский рубль</option>
+								<option value="GBP" {% if result and result.from_currency=='GBP' %}selected{% endif %}>🇬🇧 GBP - Фунт
+									стерлингов</option>
+								<option value="JPY" {% if result and result.from_currency=='JPY' %}selected{% endif %}>🇯🇵 JPY -
+									Японская иена</option>
+								<option value="CNY" {% if result and result.from_currency=='CNY' %}selected{% endif %}>🇨🇳 CNY -
+									Китайский юань</option>
+								<option value="CHF" {% if result and result.from_currency=='CHF' %}selected{% endif %}>🇨🇭 CHF -
+									Швейцарский франк</option>
+								<option value="CAD" {% if result and result.from_currency=='CAD' %}selected{% endif %}>🇨🇦 CAD -
+									Канадский доллар</option>
+							</select>
+						</div>
+
+						<div class="col-md-3">
+							<label for="to_currency" class="form-label">В валюту</label>
+							<select class="form-select" id="to_currency" name="to_currency" required>
+								<option value="RUB" {% if result and result.to_currency=='RUB' %}selected{% endif %}>🇷🇺 RUB -
+									Российский рубль</option>
+								<option value="USD" {% if result and result.to_currency=='USD' %}selected{% endif %}>🇺🇸 USD - Доллар
+									США</option>
+								<option value="EUR" {% if result and result.to_currency=='EUR' %}selected{% endif %}>🇪🇺 EUR - Евро
+								</option>
+								<option value="GBP" {% if result and result.to_currency=='GBP' %}selected{% endif %}>🇬🇧 GBP - Фунт
+									стерлингов</option>
+								<option value="JPY" {% if result and result.to_currency=='JPY' %}selected{% endif %}>🇯🇵 JPY - Японская
+									иена</option>
+								<option value="CNY" {% if result and result.to_currency=='CNY' %}selected{% endif %}>🇨🇳 CNY -
+									Китайский юань</option>
+								<option value="CHF" {% if result and result.to_currency=='CHF' %}selected{% endif %}>🇨🇭 CHF -
+									Швейцарский франк</option>
+								<option value="CAD" {% if result and result.to_currency=='CAD' %}selected{% endif %}>🇨🇦 CAD -
+									Канадский доллар</option>
+							</select>
+						</div>
+
+						<div class="col-md-1">
+							<button type="submit" class="btn btn-success">
+								<i class="fas fa-sync-alt"></i>
+							</button>
+						</div>
+					</div>
+
+					<div class="d-grid gap-2 mt-3">
+						<button type="submit" class="btn btn-primary btn-lg">
+							<i class="fas fa-calculator"></i> Конвертировать
+						</button>
+					</div>
+				</form>
+
+				{% if result %}
+				<div class="mt-4 p-4 bg-light rounded shadow-sm">
+					<h4 class="text-center mb-3">Результат конвертации</h4>
+					<div class="text-center display-5 mb-3">
+						<span class="badge bg-primary fs-4">{{ result.amount }} {{ result.from_currency }}</span>
+						<i class="fas fa-arrow-right mx-3 text-muted"></i>
+						<span class="badge bg-success fs-4">{{ result.converted_amount }} {{ result.to_currency }}</span>
+					</div>
+
+					<div class="row mt-4">
+						<div class="col-md-6">
+							<div class="card">
+								<div class="card-body text-center">
+									<h6>Курс обмена</h6>
+									<h4>1 {{ result.from_currency }} = {{ result.rate }} {{ result.to_currency }}</h4>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="card">
+								<div class="card-body text-center">
+									<h6>Обратный курс</h6>
+									<h4>1 {{ result.to_currency }} = {{ (1/result.rate)|round(6) }} {{ result.from_currency }}</h4>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="text-center mt-4">
+						<a href="/convert?amount={{ result.amount }}&from_currency={{ result.from_currency }}&to_currency={{ result.to_currency }}"
+							class="btn btn-outline-primary">
+							<i class="fas fa-redo"></i> Повторить
+						</a>
+						<a href="/convert" class="btn btn-outline-secondary">
+							<i class="fas fa-plus"></i> Новая конвертация
+						</a>
+					</div>
+				</div>
+				{% endif %}
+
+				{% if error %}
+				<div class="alert alert-danger mt-3">
+					<i class="fas fa-exclamation-triangle"></i> {{ error }}
+				</div>
+				{% endif %}
+
+				<div class="mt-4">
+					<h5><i class="fas fa-fire"></i> Популярные конвертации</h5>
+					<div class="row mt-3">
+						<div class="col-6 col-md-3 mb-2">
+							<a href="/convert?amount=100&from_currency=USD&to_currency=RUB" class="btn btn-outline-primary w-100">
+								100 USD → RUB
+							</a>
+						</div>
+						<div class="col-6 col-md-3 mb-2">
+							<a href="/convert?amount=100&from_currency=EUR&to_currency=RUB" class="btn btn-outline-primary w-100">
+								100 EUR → RUB
+							</a>
+						</div>
+						<div class="col-6 col-md-3 mb-2">
+							<a href="/convert?amount=1000&from_currency=RUB&to_currency=USD" class="btn btn-outline-primary w-100">
+								1000 RUB → USD
+							</a>
+						</div>
+						<div class="col-6 col-md-3 mb-2">
+							<a href="/convert?amount=1000&from_currency=RUB&to_currency=EUR" class="btn btn-outline-primary w-100">
+								1000 RUB → EUR
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+	document.addEventListener('DOMContentLoaded', function () {
+		document.getElementById('swapCurrencies').addEventListener('click', function () {
+			const fromSelect = document.getElementById('from_currency')
+			const toSelect = document.getElementById('to_currency')
+			const temp = fromSelect.value
+			fromSelect.value = toSelect.value
+			toSelect.value = temp
+		})
+
+		const fromSelect = document.getElementById('from_currency')
+		const toSelect = document.getElementById('to_currency')
+
+		const savedFrom = localStorage.getItem('lastFromCurrency')
+		const savedTo = localStorage.getItem('lastToCurrency')
+
+		if (savedFrom && !fromSelect.value) {
+			fromSelect.value = savedFrom
+		}
+		if (savedTo && !toSelect.value) {
+			toSelect.value = savedTo
+		}
+
+		fromSelect.addEventListener('change', function () {
+			localStorage.setItem('lastFromCurrency', this.value)
+		})
+
+		toSelect.addEventListener('change', function () {
+			localStorage.setItem('lastToCurrency', this.value)
+		})
+	});
+</script>
+{% endblock %}
