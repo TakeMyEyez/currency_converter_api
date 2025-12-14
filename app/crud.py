@@ -91,6 +91,7 @@ def delete_currency_rate(db: Session, rate_id: int):
         db.commit()
     return db_currency_rate
 
+# Conversion History CRUD
 def create_conversion(db: Session, conversion: schemas.ConversionResponse, user_id: int):
     db_conversion = models.ConversionHistory(
         user_id=user_id,

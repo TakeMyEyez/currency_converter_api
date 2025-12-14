@@ -9,6 +9,9 @@ from datetime import datetime, timedelta
 import json
 import os
 import random
+from fastapi.exceptions import RequestValidationError
+from pydantic import ValidationError
+
 
 from app.dependencies import templates
 from app.database import engine, get_db, Base, SessionLocal
@@ -421,11 +424,39 @@ async def not_found_exception_handler(request: Request, exc: HTTPException):
         )
     return templates.TemplateResponse("404.html", {"request": request})
 
-@app.exception_handler(422)
-async def validation_exception_handler(request: Request, exc: HTTPException):
+@app.exception_handler(RequestValidationError)
+async def request_validation_exception_handler(
+    request: Request,
+    exc: RequestValidationError
+):
+    # API → JSON
     if request.url.path.startswith("/api/"):
         return JSONResponse(
             status_code=422,
-            content={"detail": "Validation error"}
+            content={"detail": exc.errors()}
         )
-    return RedirectResponse("/", status_code=303)
+
+    # HTML → страница регистрации
+    return templates.TemplateResponse(
+        "422.html",
+        {
+            "request": request,
+            "errors": exc.errors(),
+        },
+        status_code=422
+    )
+
+
+@app.exception_handler(ValidationError)
+async def pydantic_validation_exception_handler(
+    request: Request,
+    exc: ValidationError
+):
+    return templates.TemplateResponse(
+        "422.html",
+        {
+            "request": request,
+            "errors": exc.errors(),
+        },
+        status_code=422
+    )

@@ -38,6 +38,8 @@ async def admin_users(request: Request, db: Session = Depends(get_db)):
         "active_tab": "users"
     })
 
+# === УПРАВЛЕНИЕ КУРСАМИ (только POST методы для HTML-форм) ===
+
 @admin_router.post("/api/rates", response_class=HTMLResponse)
 async def create_rate(
     request: Request,
@@ -112,6 +114,8 @@ async def update_rate(
     except Exception as e:
         return RedirectResponse(url=f"/admin/rates?error={str(e)}", status_code=303)
 
+# === УПРАВЛЕНИЕ ПОЛЬЗОВАТЕЛЯМИ ===
+
 @admin_router.post("/api/users/{user_id}/toggle-active", response_class=HTMLResponse)
 async def toggle_user_active(
     user_id: int,
@@ -171,4 +175,3 @@ async def delete_user(
         return RedirectResponse(url="/admin/users?success=Пользователь успешно удален", status_code=303)
     except Exception as e:
         return RedirectResponse(url=f"/admin/users?error={str(e)}", status_code=303)
-    

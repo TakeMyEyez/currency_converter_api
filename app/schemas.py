@@ -86,3 +86,14 @@ class ConversionHistoryResponse(BaseModel):
     
     class Config:
         from_attributes = True
+
+class RegisterForm(BaseModel):
+    username: str = Field(..., min_length=3, max_length=50)
+    password: str = Field(..., min_length=6)
+    password_confirm: str
+
+    @validator("password_confirm")
+    def passwords_match(cls, v, values):
+        if "password" in values and v != values["password"]:
+            raise ValueError("Пароли не совпадают")
+        return v
