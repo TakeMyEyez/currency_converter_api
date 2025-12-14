@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+	<div class="col-12">
+		<div class="card shadow mb-4">
+			<div class="card-header bg-danger text-white d-flex justify-content-between align-items-center">
+				<h4><i class="fas fa-cog"></i> Административная панель</h4>
+				<span class="badge bg-light text-dark">Администратор</span>
+			</div>
+			<div class="card-body">
+				<h5 class="card-title">Добро пожаловать, администратор {{ user.username }}!</h5>
+				<p class="card-text">Здесь вы можете управлять всеми аспектами системы.</p>
+
+				<div class="row mt-4">
+					<div class="col-md-3 mb-3">
+						<div class="card bg-primary text-white">
+							<div class="card-body text-center">
+								<i class="fas fa-users fa-2x mb-2"></i>
+								<h3>{{ total_users }}</h3>
+								<p class="mb-0">Пользователей</p>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-3 mb-3">
+						<div class="card bg-success text-white">
+							<div class="card-body text-center">
+								<i class="fas fa-exchange-alt fa-2x mb-2"></i>
+								<h3>{{ total_conversions }}</h3>
+								<p class="mb-0">Конвертаций</p>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-3 mb-3">
+						<div class="card bg-info text-white">
+							<div class="card-body text-center">
+								<i class="fas fa-chart-line fa-2x mb-2"></i>
+								<h3>{{ total_rates }}</h3>
+								<p class="mb-0">Курсов валют</p>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-3 mb-3">
+						<div class="card bg-warning text-dark">
+							<div class="card-body text-center">
+								<i class="fas fa-check-circle fa-2x mb-2"></i>
+								<h3>{{ active_rates }}</h3>
+								<p class="mb-0">Активных курсов</p>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="row mt-4">
+					<div class="col-md-6">
+						<div class="card">
+							<div class="card-header">
+								<h5><i class="fas fa-cogs"></i> Быстрые действия</h5>
+							</div>
+							<div class="card-body">
+								<div class="d-grid gap-2">
+									<a href="/admin/rates" class="btn btn-outline-primary">
+										<i class="fas fa-money-bill-wave"></i> Управление курсами
+									</a>
+									<a href="/admin/users" class="btn btn-outline-success">
+										<i class="fas fa-users"></i> Управление пользователями
+									</a>
+									<a href="/convert" class="btn btn-outline-info">
+										<i class="fas fa-calculator"></i> Конвертер валют
+									</a>
+									<a href="/docs" class="btn btn-outline-secondary" target="_blank">
+										<i class="fas fa-book"></i> Документация API
+									</a>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-md-6">
+						<div class="card">
+							<div class="card-header">
+								<h5><i class="fas fa-history"></i> Последние конвертации</h5>
+							</div>
+							<div class="card-body">
+								{% if recent_conversions %}
+								<div class="table-responsive">
+									<table class="table table-sm">
+										<thead>
+											<tr>
+												<th>Время</th>
+												<th>Пользователь</th>
+												<th>Сумма</th>
+												<th>Результат</th>
+											</tr>
+										</thead>
+										<tbody>
+											{% for conv in recent_conversions %}
+											<tr>
+												<td>{{ conv.timestamp.strftime('%H:%M') }}</td>
+												<td>ID: {{ conv.user_id }}</td>
+												<td>{{ conv.amount }} {{ conv.from_currency }}</td>
+												<td>{{ conv.converted_amount }} {{ conv.to_currency }}</td>
+											</tr>
+											{% endfor %}
+										</tbody>
+									</table>
+								</div>
+								{% else %}
+								<p class="text-muted">Нет недавних конвертаций</p>
+								{% endif %}
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}

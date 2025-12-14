@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+	<h1 class="text-primary mb-4">Админ-панель</h1>
+
+	<div class="row">
+		<div class="col-md-6 mb-4">
+			<div class="card shadow">
+				<div class="card-header bg-primary text-white">
+					<h5 class="mb-0">Управление курсами</h5>
+				</div>
+				<div class="card-body">
+					<p>Текущее количество курсов: <strong>{{ rates|length }}</strong></p>
+					<a href="/admin/rates" class="btn btn-primary">Перейти к управлению</a>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-md-6 mb-4">
+			<div class="card shadow">
+				<div class="card-header bg-secondary text-white">
+					<h5 class="mb-0">Управление пользователями</h5>
+				</div>
+				<div class="card-body">
+					<p>Всего пользователей: <strong>{{ users|length }}</strong></p>
+					<a href="/admin/users" class="btn btn-secondary">Перейти к управлению</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}

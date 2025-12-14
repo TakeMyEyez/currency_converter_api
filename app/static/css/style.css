@@ -1,0 +1,167 @@
+:root {
+	--primary-color: #4e73df;
+	--secondary-color: #858796;
+	--success-color: #1cc88a;
+	--info-color: #36b9cc;
+	--warning-color: #f6c23e;
+	--danger-color: #e74a3b;
+	--light-color: #f8f9fc;
+	--dark-color: #5a5c69;
+}
+
+body {
+	background-color: #f8f9fc;
+	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Карточки */
+.card {
+	border-radius: 10px;
+	box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+	border: none;
+	margin-bottom: 20px;
+}
+
+.card-header {
+	background-color: #fff;
+	border-bottom: 1px solid #e3e6f0;
+	font-weight: 600;
+}
+
+/* Формы */
+.form-control {
+	border-radius: 10px;
+	border: 1px solid #d1d3e2;
+	padding: 10px 15px;
+}
+
+.form-control:focus {
+	border-color: #4e73df;
+	box-shadow: 0 0 0 0.2rem rgba(78, 115, 223, 0.25);
+}
+
+.btn {
+	border-radius: 10px;
+	padding: 10px 20px;
+	font-weight: 500;
+}
+
+.btn-primary {
+	background-color: var(--primary-color);
+	border-color: var(--primary-color);
+}
+
+.btn-primary:hover {
+	background-color: #2e59d9;
+	border-color: #2653d4;
+}
+
+/* Таблицы */
+.table {
+	background-color: #fff;
+	border-radius: 10px;
+	overflow: hidden;
+	box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.1);
+}
+
+.table th {
+	background-color: var(--primary-color);
+	color: white;
+	border: none;
+}
+
+/* Конвертер */
+.converter-box {
+	max-width: 600px;
+	margin: 0 auto;
+	background: white;
+	padding: 30px;
+	border-radius: 15px;
+	box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+/* Анимации */
+.fade-in {
+	animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+	from {
+		opacity: 0;
+		transform: translateY(20px);
+	}
+
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+/* Статистика */
+.stat-card {
+	background: linear-gradient(45deg, #4e73df, #224abe);
+	color: white;
+	border-radius: 10px;
+	padding: 20px;
+	margin-bottom: 20px;
+}
+
+.stat-card i {
+	font-size: 2rem;
+	margin-bottom: 10px;
+}
+
+.stat-card .stat-number {
+	font-size: 2rem;
+	font-weight: bold;
+}
+
+/* История */
+.history-item {
+	background: white;
+	border-radius: 10px;
+	padding: 15px;
+	margin-bottom: 10px;
+	border-left: 4px solid var(--primary-color);
+	transition: transform 0.2s;
+}
+
+.history-item:hover {
+	transform: translateX(5px);
+	box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Иконки флагов */
+.flag-icon {
+	width: 20px;
+	height: 15px;
+	display: inline-block;
+	margin-right: 8px;
+	background-size: cover;
+	border-radius: 2px;
+	vertical-align: middle;
+}
+
+.flag-us {
+	background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 30"><clipPath id="a"><path d="M0 0v30h60V0z"/></clipPath><clipPath id="b"><path d="M30 15h30v15zv15H0zH0v15zv15h60z"/></clipPath><g clip-path="url(#a)"><path d="M0 0v30h60V0z" fill="#012169"/><path d="M0 0l60 30m0-30L0 30" stroke="#fff" stroke-width="6"/><path d="M0 0l60 30m0-30L0 30" clip-path="url(#b)" stroke="#C8102E" stroke-width="4"/><path d="M30 0v30M0 15h60" stroke="#fff" stroke-width="10"/><path d="M30 0v30M0 15h60" stroke="#C8102E" stroke-width="6"/></g></svg>');
+}
+
+.flag-eu {
+	background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 30"><rect width="60" height="30" fill="#003399"/><circle cx="30" cy="15" r="8" fill="#FFCC00"/></svg>');
+}
+
+.flag-ru {
+	background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 30"><rect width="60" height="10" y="0" fill="#fff"/><rect width="60" height="10" y="10" fill="#0039a6"/><rect width="60" height="10" y="20" fill="#d52b1e"/></svg>');
+}
+
+.flag-gb {
+	background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 30"><rect width="60" height="30" fill="#012169"/></svg>');
+}
+
+.flag-jp {
+	background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 30"><circle cx="30" cy="15" r="8" fill="#bc002d"/><rect width="60" height="30" fill="#fff"/></svg>');
+}
+
+.flag-cn {
+	background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 30"><rect width="60" height="30" fill="#de2910"/></svg>');
+}
